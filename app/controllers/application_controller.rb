@@ -17,7 +17,12 @@ class ApplicationController < ActionController::Base
 
   def authorize_api_request!
   	if params[:format].to_s == 'json'
-  		  # Prevent unauthorized requests
+  		# Prevent unauthorized requests
+      t = Time.now.to_i
+      token = Digest::SHA256.hexdigest("#{t}k1tten_m1tt3ns")
+      if params[:token] != token 
+        render json: {}, status: :forbidden 
+      end
   	end
   end
 end
